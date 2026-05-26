@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Green Living Challenge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .draggable { cursor: grab; padding: 12px 24px; background: #3b82f6; color: white; border-radius: 9999px; margin: 8px; display: inline-block; font-weight: 600; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); transition: opacity 0.3s; user-select: none; z-index: 100; }
+        .drop-zone-container { position: relative; width: 100%; max-width: 600px; margin: 0 auto; }
+        .drop-target { position: absolute; width: 80px; height: 80px; z-index: 20; cursor: crosshair; pointer-events: auto; background: rgba(255, 0, 0, 0.05); border: 2px dashed rgba(255, 0, 0, 0.2); border-radius: 50%; }
+        .number-tag { position: absolute; width: 50px; height: 50px; background: #ef4444; color: white; border-radius: 50%; display: none; align-items: center; justify-content: center; font-weight: bold; z-index: 10; border: 2px solid white; pointer-events: none; }
+        .circle-marker { position: absolute; width: 80px; height: 80px; border: 4px solid red; border-radius: 50%; pointer-events: none; animation: pop 0.5s ease-out; z-index: 5; }
+        @keyframes pop { 0% { transform: scale(0); opacity: 0; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+    </style>
+</head>
+<body class="bg-gray-100 p-6">
+
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-4xl font-bold text-center mb-8 text-green-700">Green Living Challenge</h1>
+        
+        <div class="flex flex-wrap justify-center gap-3 mb-10 bg-white p-6 rounded-2xl shadow-md border-t-4 border-green-500">
+            <div draggable="true" class="draggable" ondragstart="drag(event)" id="w1" data-id="1">1. Ride a bike</div>
+            <div draggable="true" class="draggable" ondragstart="drag(event)" id="w2" data-id="2">2. Carry a reusable bag</div>
+            <div draggable="true" class="draggable" ondragstart="drag(event)" id="w3" data-id="3">3. Plan your meals</div>
+            <div draggable="true" class="draggable" ondragstart="drag(event)" id="w4" data-id="4">4. Recycle glass bottles and cans</div>
+            <div draggable="true" class="draggable" ondragstart="drag(event)" id="w5" data-id="5">5. Hang your clothes to dry</div>
+            <div draggable="true" class="draggable" ondragstart="drag(event)" id="w6" data-id="6">6. Plant trees</div>
+            <div draggable="true" class="draggable" ondragstart="drag(event)" id="w7" data-id="7">7. Plant flowers</div>
+            <div draggable="true" class="draggable" ondragstart="drag(event)" id="w8" data-id="8">8. Go to neighborhood meetings</div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <!-- Ảnh 1 -->
+            <div class="drop-zone-container">
+                <img src="anh1.png" alt="Ảnh 1" class="w-full h-auto rounded-lg shadow-lg">
+                <!-- Ride a bike: Người đàn ông áo xanh chạy xe -->
+                <div class="drop-target" style="top: 35%; left: 45%" data-id="1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <div class="drop-target" style="top: 65%; left: 25%" data-id="2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <div class="drop-target" style="top: 55%; left: 10%" data-id="3" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <div class="drop-target" style="top: 50%; left: 35%" data-id="4" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <div class="drop-target" style="top: 30%; left: 15%" data-id="5" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <div class="number-tag" id="tag1" style="top: 35%; left: 45%">1</div>
+                <div class="number-tag" id="tag2" style="top: 65%; left: 25%">2</div>
+                <div class="number-tag" id="tag3" style="top: 55%; left: 10%">3</div>
+                <div class="number-tag" id="tag4" style="top: 50%; left: 35%">4</div>
+                <div class="number-tag" id="tag5" style="top: 30%; left: 15%">5</div>
+            </div>
+            <!-- Ảnh 2 -->
+            <div class="drop-zone-container">
+                <img src="anh2.png" alt="Ảnh 2" class="w-full h-auto rounded-lg shadow-lg">
+                <div class="drop-target" style="top: 80%; left: 50%" data-id="6" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <!-- Plant flowers: Cô gái ngồi cầm bình tưới màu vàng -->
+                <div class="drop-target" style="top: 55%; left: 65%" data-id="7" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <div class="drop-target" style="top: 10%; left: 60%" data-id="8" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <div class="number-tag" id="tag6" style="top: 80%; left: 50%">6</div>
+                <div class="number-tag" id="tag7" style="top: 55%; left: 65%">7</div>
+                <div class="number-tag" id="tag8" style="top: 10%; left: 60%">8</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function allowDrop(ev) { ev.preventDefault(); }
+        function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+
+        function drop(ev) {
+            ev.preventDefault();
+            const wordId = ev.dataTransfer.getData("text");
+            const draggedElement = document.getElementById(wordId);
+            const draggedId = draggedElement.getAttribute('data-id');
+            
+            const target = ev.target.closest('.drop-target');
+            if (!target) return;
+            
+            const targetId = target.getAttribute('data-id');
+
+            if (targetId === draggedId) {
+                const tag = document.getElementById('tag' + targetId);
+                tag.style.display = 'flex';
+                
+                const marker = document.createElement('div');
+                marker.className = 'circle-marker';
+                marker.style.left = (target.offsetLeft - 10) + 'px';
+                marker.style.top = (target.offsetTop - 10) + 'px';
+                target.parentElement.appendChild(marker);
+                
+                draggedElement.style.opacity = '0.3';
+                draggedElement.setAttribute('draggable', 'false');
+                setTimeout(() => marker.remove(), 2000);
+            } else {
+                alert("Sai rồi! Hãy thử lại vào đúng vị trí số nhé.");
+            }
+        }
+    </script>
+</body>
+</html>
